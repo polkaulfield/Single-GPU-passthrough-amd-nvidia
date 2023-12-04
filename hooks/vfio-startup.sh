@@ -101,17 +101,12 @@ sleep "1"
 ##############################################################################################################################
 ## Unbind VTconsoles if currently bound (adapted and modernised from https://www.kernel.org/doc/Documentation/fb/fbcon.txt) ##
 ##############################################################################################################################
-if test -e "/tmp/vfio-bound-consoles"; then
-    rm -f /tmp/vfio-bound-consoles
-fi
+
 for (( i = 0; i < 16; i++))
 do
   if test -x /sys/class/vtconsole/vtcon"${i}"; then
-      if [ "$(grep -c "frame buffer" /sys/class/vtconsole/vtcon"${i}"/name)" = 1 ]; then
-	       echo 0 > /sys/class/vtconsole/vtcon"${i}"/bind
-           echo "$DATE Unbinding Console ${i}"
-           echo "$i" >> /tmp/vfio-bound-consoles
-      fi
+	echo 0 > /sys/class/vtconsole/vtcon"${i}"/bind
+        echo "$DATE Unbinding Console ${i}"
   fi
 done
 
