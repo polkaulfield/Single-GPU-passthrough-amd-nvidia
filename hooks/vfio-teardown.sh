@@ -80,20 +80,4 @@ while read -r DISPMGR; do
   fi
 done < "$input"
 
-############################################################################################################
-## Rebind VT consoles (adapted and modernised from https://www.kernel.org/doc/Documentation/fb/fbcon.txt) ##
-############################################################################################################
-
-input="/tmp/vfio-bound-consoles"
-while read -r consoleNumber; do
-  if test -x /sys/class/vtconsole/vtcon"${consoleNumber}"; then
-      if [ "$(grep -c "frame buffer" "/sys/class/vtconsole/vtcon${consoleNumber}/name")" \
-           = 1 ]; then
-    echo "$DATE Rebinding console ${consoleNumber}"
-	  echo 1 > /sys/class/vtconsole/vtcon"${consoleNumber}"/bind
-      fi
-  fi
-done < "$input"
-
-
 echo "$DATE End of Teardown!"
